@@ -1,0 +1,60 @@
+# ── Python ──────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+.installed.cfg
+
+# ── Virtual environments ─────────────────────────────────────────────────────
+.venv/
+venv/
+env/
+.env/
+
+# ── Environment variables ────────────────────────────────────────────────────
+.env
+*.env.local
+
+# ── Data — raw and interim are never committed ───────────────────────────────
+data/raw/
+data/interim/
+# data/processed/ is committed only if files are small; ignore large datasets
+*.mseed
+*.csv.gz
+
+# ── Artifacts ────────────────────────────────────────────────────────────────
+artifacts/mlruns/
+artifacts/models/
+# figures are committed (small PNGs used in report)
+
+# ── IDE and OS ───────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.DS_Store
+Thumbs.db
+
+# ── Jupyter ──────────────────────────────────────────────────────────────────
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# ── Testing and coverage ─────────────────────────────────────────────────────
+.pytest_cache/
+.coverage
+htmlcov/
+coverage.xml
+
+# ── LaTeX build artifacts ────────────────────────────────────────────────────
+docs/report/*.aux
+docs/report/*.log
+docs/report/*.out
+docs/report/*.toc
+docs/report/*.fls
+docs/report/*.fdb_latexmk
+docs/report/*.synctex.gz
+# keep .bbl (needed to rebuild PDF without bibtex)
