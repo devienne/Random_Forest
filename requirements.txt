@@ -1,0 +1,12 @@
+# Core runtime dependencies
+# Generated from pyproject.toml — pin versions after running: pip freeze > requirements.txt
+obspy>=1.4
+pandas>=2.1
+numpy>=1.26
+scipy>=1.11
+scikit-learn>=1.4
+matplotlib>=3.8
+requests>=2.31
+pyyaml>=6.0
+python-dotenv>=1.0
+pydantic>=2.5

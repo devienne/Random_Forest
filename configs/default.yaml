@@ -1,0 +1,100 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Cascadia Fault Slip — default configuration
+# All tuneable parameters for data acquisition, feature engineering, and model
+# training are centralised here. Override any value via environment variables
+# or by creating a configs/custom.yaml and passing --config to train.py.
+# ─────────────────────────────────────────────────────────────────────────────
+
+seismic:
+  # IRIS FDSN web service endpoints
+  station_url: "http://service.iris.edu/fdsnws/station/1/query"
+  dataselect_url: "http://service.iris.edu/fdsnws/dataselect/1/query"
+
+  # Geographic search: stations within max_radius_deg of (center_lat, center_lon)
+  center_lat: 48.9
+  center_lon: -123.9
+  max_radius_deg: 0.6
+
+  # Channel to download (east component, high-broadband)
+  channel: "HHE"
+
+  # Time window for the full dataset
+  start_date: "2010-01-01"
+  end_date: "2020-09-30"
+
+  # One hour of data is downloaded per station per day (00:00 – 01:00)
+  window_hours: 1
+
+  # Bandpass filter bands applied to each daily seismic trace (Hz)
+  # Each entry is [freq_min, freq_max]
+  freq_bands:
+    - [8, 9]
+    - [9, 10]
+    - [10, 11]
+    - [11, 12]
+    - [12, 13]
+
+  # Statistical features computed per band
+  statistics:
+    - kurtosis
+    - variance
+    - value_range
+    - skewness
+
+  # Rolling mean window applied to smooth seismic features before training
+  rolling_window_days: 60
+
+
+gps:
+  # UNAVCO web service endpoints
+  metadata_url: "https://web-services.unavco.org/gps/metadata/sites/v1"
+  position_url: "https://web-services.unavco.org/gps/data/position"
+
+  # Bounding box: center ± search_radius_deg (applied independently to lat/lon)
+  center_lat: 48.9
+  center_lon: -124.4
+  search_radius_deg: 1.0
+
+  # GPS processing options (Western Canada Deformation Array, USGS-preprocessed)
+  reference_frame: "nam14"
+  analysis_center: "cwu"
+
+  # Only stations active throughout this full range are retained
+  start_date: "2010-01-01"
+  end_date: "2020-09-30"
+
+  # Stations with too many missing days are excluded (known bad stations from
+  # the original study: GHNB, GOBB, SNB)
+  excluded_stations:
+    - GHNB
+    - GOBB
+    - SNB
+
+  # Rolling linear regression window used to compute displacement rate (mm/yr)
+  # Slope of the regression over this window becomes the target variable.
+  rolling_window_days: 60
+
+
+model:
+  # RandomForestRegressor hyperparameters
+  n_estimators: 100
+  max_depth: null          # null = no limit (sklearn default)
+  min_samples_split: 2
+  max_features: 1.0        # fraction of features considered at each split
+  random_state: 42
+
+  # Chronological train/test split: first train_size fraction of time-ordered
+  # rows are used for training; the remaining rows form the test set.
+  # A random split is intentionally NOT used — see docs/report/ for details.
+  train_size: 0.8
+
+
+paths:
+  data_dir: "data"
+  raw_seismic_dir: "data/raw/seismic"
+  raw_gps_dir: "data/raw/gps"
+  interim_dir: "data/interim"
+  processed_dir: "data/processed"
+  artifacts_dir: "artifacts"
+  figures_dir: "artifacts/figures"
+  models_dir: "artifacts/models"
